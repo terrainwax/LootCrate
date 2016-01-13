@@ -7,7 +7,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
 
-public class command2 implements CommandExecutor {
+public class LootCommand implements CommandExecutor {
 
 	public CommandResult execute(CommandSource src, CommandContext args)
 			throws CommandException {

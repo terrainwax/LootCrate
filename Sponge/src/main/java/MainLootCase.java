@@ -24,7 +24,7 @@ import com.flowpowered.math.vector.Vector3d;
 import com.google.inject.Inject;
 
 @Plugin(id = "example", name = "Example Project", version = "1.0")
-public class test {
+public class MainLootCase {
 	@Inject
 	private Logger logger;
 	@Inject
@@ -33,13 +33,13 @@ public class test {
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
 
-        CommandSpec command2 = CommandSpec.builder()
+        CommandSpec LootCommand = CommandSpec.builder()
             	    .description(Text.of("Hello World Command"))
             	    .permission("myplugin.command.helloworld")
-            	    .executor(new command2())
+            	    .executor(new LootCommand())
             	    .build();
 
-            	game.getCommandManager().register(this, command2, "ccc", "cc", "tesst");
+            	game.getCommandManager().register(this, LootCommand, "ccc", "cc", "tesst");
         	
     }
     
