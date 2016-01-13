@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>terrainwax</groupId>
+  <artifactId>Sponge</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>terrainwax plugin</name>
+  <description>plugin sponge of terrainwax</description>
+  <repositories>
+    <repository>
+        <id>sponge-maven-repo</id>
+        <name>Sponge maven repo</name>
+        <url>http://repo.spongepowered.org/maven</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>org.spongepowered</groupId>
+        <artifactId>spongeapi</artifactId>
+        <version>3.0.0</version>
+        <scope>provided</scope>
+    </dependency>
+</dependencies>
+
+</project>
