@@ -56,11 +56,13 @@ public class MainLootCase {
         		
             	    .description(Text.of(""))
             	    .permission("Loot.command.execute")
-            	    .arguments(GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))), GenericArguments.string(Text.of("Case")))
+            	    .arguments(
+                GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))),
+                GenericArguments.remainingJoinedStrings(Text.of("case")))
             	    .executor(new LootCommand())
             	    .build();
 
-            	game.getCommandManager().register(this, LootCommand, "ccc", "cc", "tesst");
+            	game.getCommandManager().register(this, LootCommand, "LC give");
             	
                 CommandSpec LootList = CommandSpec.builder()
                 	    .description(Text.of(""))
