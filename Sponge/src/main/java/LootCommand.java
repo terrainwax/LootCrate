@@ -12,18 +12,24 @@ public class LootCommand implements CommandExecutor {
 
 	public CommandResult execute(CommandSource src, CommandContext args)
 			throws CommandException {
-		Player p = args.<Player>getOne("Player").get();
-		String caseid = args.<String>getOne("Case").get();
+		Player player = args.<Player>getOne("player").get();
+        String caseid = args.<String>getOne("case").get();
 		if(caseid == "test"){
-			
-			
+			int i = (int) Math.floor(Math.random() * 101);
+			if(i < 90){
+			src.sendMessages(Text.of("test"));
+			}else if(i > 90){
+				src.sendMessages(Text.of("bravo tu a eu 10% de chance"));
+			}
+			return CommandResult.success();
 		}else{
 			Text errorText = Text.builder("Cette case n'existe pas").color(TextColors.RED).build();
 			src.sendMessages(errorText);
+			return CommandResult.success();
 		}
 		
 		
-		return null;
+		
 	}
 
 }
