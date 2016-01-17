@@ -118,7 +118,7 @@ public class MainLootCase {
                 	                String caseid = args.<String>getOne("id").get();
                 	                src.sendMessages(Text.of(caseid));
 
-                	                if(caseid == "test"){
+                	                if(caseid == caseid){
                 	        			int i = (int) Math.floor(Math.random() * 101);
                 	        			if(i < 90){
                 	        			src.sendMessages(Text.of("test"));
