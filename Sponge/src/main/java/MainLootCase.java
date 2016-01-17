@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Optional;
 
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
@@ -8,6 +9,7 @@ import ninja.leaping.configurate.loader.ConfigurationLoader;
 
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -17,9 +19,16 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
+import org.spongepowered.api.data.key.Key;
+import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.entity.InteractEntityEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.event.item.inventory.UseItemStackEvent;
+import org.spongepowered.api.item.ItemType;
+import org.spongepowered.api.item.ItemTypes;
+import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.text.Text;
@@ -59,7 +68,7 @@ public class MainLootCase {
     	} catch(IOException e) {
     	    // error
     	}
-        CommandSpec LootCommand = CommandSpec.builder()
+        /*CommandSpec LootCommand = CommandSpec.builder()
             	    .description(Text.of("/LC give <player> <case>"))
             	    .permission("Loot.command.execute")
             	    .arguments(
@@ -71,7 +80,7 @@ public class MainLootCase {
             	    			throws CommandException {
             	    		Player player = args.<Player>getOne("player").get();
             	            String caseid = args.<String>getOne("case").get();
-            	    		/*if(caseid == "test"){
+            	    		if(caseid == "test"){
             	    			int i = (int) Math.floor(Math.random() * 101);
             	    			if(i < 90){
             	    			src.sendMessages(Text.of("test"));
@@ -85,7 +94,7 @@ public class MainLootCase {
             	    			Text errorText = Text.builder("Cette case n'existe pas").color(TextColors.RED).build();
             	    			src.sendMessages(errorText);
             	    			return CommandResult.success();
-            	    		}*/
+            	    		}
             	    		src.sendMessages(Text.of("test"));
             	            return CommandResult.success();
             	    		
@@ -94,7 +103,7 @@ public class MainLootCase {
             	    })
             	    .build();
 
-            	game.getCommandManager().register(this, LootCommand, "LC give", "Lootcommand give", "LC G");
+            	game.getCommandManager().register(this, LootCommand, "LC give", "Lootcommand give", "LC G");*/
             	
                 CommandSpec LootList = CommandSpec.builder()
                 	    .description(Text.of(""))
@@ -103,9 +112,9 @@ public class MainLootCase {
                 	    .build();
 
                 	game.getCommandManager().register(this, LootList, "LC list");
-                	CommandSpec myCommandSpec = CommandSpec.builder()
-                	        .description(Text.of("Send a message to a player"))
-                	        .permission("myplugin.command.message")
+                	CommandSpec lootcommand = CommandSpec.builder()
+                	        .description(Text.of("Give a Loot case to a player"))
+                	        .permission("lootcase.command.give")
 
                 	        .arguments(
                 	                GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))),
@@ -115,6 +124,12 @@ public class MainLootCase {
                 	            public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
                 	                Player player = args.<Player>getOne("player").get();
+                	                ItemType item = ItemTypes.CHEST ;
+                	                ItemStack st = (ItemStack) Sponge.getRegistry().createBuilder(ItemStack.Builder.class).itemType(item).build();
+                	                st.offer(Keys.DISPLAY_NAME, Text.of("FLARD"));
+                	                player.getInventory().offer(st);
+                	              
+                							
                 	                String caseid = args.<String>getOne("id").get();
                 	                src.sendMessages(Text.of(caseid));
 
@@ -135,9 +150,14 @@ public class MainLootCase {
                 	        })
                 	        .build();
 
-                	game.getCommandManager().register(this, myCommandSpec, "test", "msg", "m");
+                	game.getCommandManager().register(this, lootcommand, "LCgive", "Lootcommand give", "LC G");
                 	
         	
+    }
+    @Listener
+    public void onUse(UseItemStackEvent event) {
+    	
+    	
     }
     
 }
