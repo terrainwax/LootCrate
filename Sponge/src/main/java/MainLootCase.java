@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import ninja.leaping.configurate.ConfigurationNode;
@@ -19,18 +21,22 @@ import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
-import org.spongepowered.api.data.key.Key;
 import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.data.manipulator.immutable.item.ImmutableInventoryItemData;
+import org.spongepowered.api.data.manipulator.mutable.entity.SizeData;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.block.InteractBlockEvent;
+import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.entity.InteractEntityEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
-import org.spongepowered.api.event.item.inventory.UseItemStackEvent;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.service.pagination.PaginationBuilder;
+import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
@@ -55,7 +61,6 @@ public class MainLootCase {
 	@Inject
 	private Game game;
 	
-	
 
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
@@ -68,50 +73,7 @@ public class MainLootCase {
     	} catch(IOException e) {
     	    // error
     	}
-        /*CommandSpec LootCommand = CommandSpec.builder()
-            	    .description(Text.of("/LC give <player> <case>"))
-            	    .permission("Loot.command.execute")
-            	    .arguments(
-                	                GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))),
-                	                GenericArguments.remainingJoinedStrings(Text.of("case")))
-            	    .executor(new CommandExecutor() {
-            	    	
-            	    	public CommandResult execute(CommandSource src, CommandContext args)
-            	    			throws CommandException {
-            	    		Player player = args.<Player>getOne("player").get();
-            	            String caseid = args.<String>getOne("case").get();
-            	    		if(caseid == "test"){
-            	    			int i = (int) Math.floor(Math.random() * 101);
-            	    			if(i < 90){
-            	    			src.sendMessages(Text.of("test"));
-            	    			return CommandResult.success();
-            	    			}else if(i > 90){
-            	    				src.sendMessages(Text.of("bravo tu a eu 10% de chance"));
-            	    				return CommandResult.success();
-            	    			}
-            	    			return CommandResult.success();
-            	    		}else{
-            	    			Text errorText = Text.builder("Cette case n'existe pas").color(TextColors.RED).build();
-            	    			src.sendMessages(errorText);
-            	    			return CommandResult.success();
-            	    		}
-            	    		src.sendMessages(Text.of("test"));
-            	            return CommandResult.success();
-            	    		
-            	    	}
-            	    	
-            	    })
-            	    .build();
-
-            	game.getCommandManager().register(this, LootCommand, "LC give", "Lootcommand give", "LC G");*/
             	
-                CommandSpec LootList = CommandSpec.builder()
-                	    .description(Text.of(""))
-                	    .permission("Loot.command.list")
-                	    .executor(new LootList())
-                	    .build();
-
-                	game.getCommandManager().register(this, LootList, "LC list");
                 	CommandSpec lootcommand = CommandSpec.builder()
                 	        .description(Text.of("Give a Loot case to a player"))
                 	        .permission("lootcase.command.give")
@@ -121,25 +83,33 @@ public class MainLootCase {
                 	                GenericArguments.remainingJoinedStrings(Text.of("id")))
 
                 	        .executor(new CommandExecutor() {
-                	            public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+
+								public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 
                 	                Player player = args.<Player>getOne("player").get();
                 	                ItemType item = ItemTypes.CHEST ;
+                	                List<Text> textList = new ArrayList<Text>();
+                	                textList.add(Text.of("LootCase-PokemonShinyAleatoire"));
+                	                player.sendMessage(Text.of(textList));
+
+
                 	                ItemStack st = (ItemStack) Sponge.getRegistry().createBuilder(ItemStack.Builder.class).itemType(item).build();
-                	                st.offer(Keys.DISPLAY_NAME, Text.of("FLARD"));
-                	                player.getInventory().offer(st);
+                	                st.offer(Keys.DISPLAY_NAME, Text.of("LootCase"));
+                	                st.offer(Keys.ITEM_LORE, textList);
+                	                
                 	              
                 							
-                	                String caseid = args.<String>getOne("id").get();
+                	                Object caseid = args.getOne("id").get();
                 	                src.sendMessages(Text.of(caseid));
 
-                	                if(caseid == caseid){
-                	        			int i = (int) Math.floor(Math.random() * 101);
+                	                if(caseid.equals("1")){
+                	                	player.getInventory().offer(st);
+                	        			/*int i = (int) Math.floor(Math.random() * 101);
                 	        			if(i < 90){
                 	        			src.sendMessages(Text.of("test"));
                 	        			}else if(i > 90){
                 	        				src.sendMessages(Text.of("bravo tu a eu 10% de chance"));
-                	        			}
+                	        			}*/
                 	        			return CommandResult.success();
                 	        		}else{
                 	        			Text errorText = Text.builder("Cette case n'existe pas").color(TextColors.RED).build();
@@ -154,10 +124,31 @@ public class MainLootCase {
                 	
         	
     }
-    @Listener
-    public void onUse(UseItemStackEvent event) {
+    @SuppressWarnings("static-access")
+	@Listener
+    public void onUse(InteractBlockEvent.Secondary event) {
+    	Cause cause = event.getCause();
+    	Optional<Player> firstPlayer = cause.first(Player.class);
+    	Optional<ItemStack> item = firstPlayer.get().getItemInHand();
+    	Optional<Text> t = item.get().get(Keys.DISPLAY_NAME);
+    	Optional<List<Text>> ist = item.get().get(Keys.ITEM_LORE);
+    	List<Text> textList = new ArrayList<Text>();
+        textList.add(Text.of("LootCase-PokemonShinyAleatoire"));
+    	if(t.isPresent()){
+    		if(ist.isPresent()){
+    		if(t.get().equals(Text.of("LootCase"))){
+    			if(ist.get().equals(textList)){
+    			ItemStack origStack = firstPlayer.get().getItemInHand().get();
+    			firstPlayer.get().sendMessage(Text.builder("Tu vient de Gagner un shiny aleatoire").color(TextColors.AQUA).build());
+    			origStack.setQuantity(firstPlayer.get().getItemInHand().get().getQuantity()-1);
+    			firstPlayer.get().setItemInHand(origStack);
+    			 event.setCancelled(true);
+    		}}
     	
-    	
+    		
+    
+    		
+    	}}
     }
     
 }
