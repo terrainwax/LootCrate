@@ -1,12 +1,9 @@
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
-import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 
 import org.slf4j.Logger;
@@ -19,24 +16,17 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
-import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.data.manipulator.immutable.item.ImmutableInventoryItemData;
-import org.spongepowered.api.data.manipulator.mutable.entity.SizeData;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.InteractBlockEvent;
 import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.entity.InteractEntityEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.plugin.PluginContainer;
-import org.spongepowered.api.service.pagination.PaginationBuilder;
-import org.spongepowered.api.service.pagination.PaginationService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
@@ -44,35 +34,61 @@ import com.google.inject.Inject;
 
 @Plugin(id = "LootCase", name = "LootCase Project", version = "1.0")
 public class MainLootCase {
+	
+
 	@Inject
 	@DefaultConfig(sharedRoot = true)
 	private Path defaultConfig;
 
 	@Inject
 	@DefaultConfig(sharedRoot = true)
-	private ConfigurationLoader<CommentedConfigurationNode> configManager;
-	@Inject
-    private PluginContainer instance;
-	@Inject
-	@ConfigDir(sharedRoot = false)
-	private Path privateConfigDir;
+	private ConfigurationLoader<CommentedConfigurationNode> configLoader;
+
+	private ConfigManager configManager;
 	@Inject
 	private Logger logger;
 	@Inject
 	private Game game;
-	
+	public Logger getLogger() {
+		return logger;
+	}
 
     @Listener
     public void onServerStart(GameStartedServerEvent event) {
     	
-    	Path potentialFile = privateConfigDir;
-    	ConfigurationLoader<CommentedConfigurationNode> loader = HoconConfigurationLoader.builder().setPath(potentialFile).build();
-    	ConfigurationNode rootNode;
-    	try {
-    	    rootNode = loader.load();
-    	} catch(IOException e) {
-    	    // error
-    	}
+    	// Grab Instance of Config Manager
+    			configManager = ConfigManager.getInstance();
+
+    			// Setup the config, passing in the default config format builder
+    			configManager.setup(defaultConfig, configLoader, getLogger(),
+    					new ConfigManager.DefaultConfigBuilder() {
+    						@Override
+    						public void build(CommentedConfigurationNode config) {
+    							config.getNode("sampleNode")
+    									.setComment("This is a sample boolean node.")
+    									.setValue(true);
+    							config.getNode("samples", "sampleNode2")
+    									.setComment("This is a sample string node.")
+    									.setValue("Hello World!");
+    						}
+    					});
+
+    			// Alternative method of setup using Lambda Expressions
+    			configManager.setup(
+    					defaultConfig,
+    					configLoader,
+    					getLogger(),
+    					config -> {
+    						config.getNode("sampleNode")
+    								.setComment("This is a sample boolean node.")
+    								.setValue(true);
+    						config.getNode("samples", "sampleNode2")
+    								.setComment("This is a sample string node.")
+    								.setValue("Hello World!");
+    					});
+
+    			// Get the config file!
+    			CommentedConfigurationNode config = configManager.getConfig();
             	
                 	CommandSpec lootcommand = CommandSpec.builder()
                 	        .description(Text.of("Give a Loot case to a player"))
@@ -124,8 +140,7 @@ public class MainLootCase {
                 	
         	
     }
-    @SuppressWarnings("static-access")
-	@Listener
+    @Listener
     public void onUse(InteractBlockEvent.Secondary event) {
     	Cause cause = event.getCause();
     	Optional<Player> firstPlayer = cause.first(Player.class);
