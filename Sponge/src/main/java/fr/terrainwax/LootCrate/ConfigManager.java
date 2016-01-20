@@ -1,3 +1,4 @@
+package fr.terrainwax.LootCrate;
 /*
  * Copyright (C) 2015  Zerthick
  *

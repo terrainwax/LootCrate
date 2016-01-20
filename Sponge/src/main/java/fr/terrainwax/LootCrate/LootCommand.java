@@ -1,3 +1,4 @@
+package fr.terrainwax.LootCrate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,18 +25,10 @@ public class LootCommand implements CommandExecutor {
         ItemType item = ItemTypes.CHEST ;
         List<Text> textList = new ArrayList<Text>();
         textList.add(Text.of("LootCrate-PokemonShinyAleatoire"));
-        player.sendMessage(Text.of(textList));
-
-
         ItemStack st = (ItemStack) Sponge.getRegistry().createBuilder(ItemStack.Builder.class).itemType(item).build();
         st.offer(Keys.DISPLAY_NAME, Text.of("LootCrate"));
-        st.offer(Keys.ITEM_LORE, textList);
-        
-      
-				
+        st.offer(Keys.ITEM_LORE, textList);		
         Object caseid = args.getOne("id").get();
-        src.sendMessages(Text.of(caseid));
-
         if(caseid.equals("1")){
         	player.getInventory().offer(st);
 			/*int i = (int) Math.floor(Math.random() * 101);

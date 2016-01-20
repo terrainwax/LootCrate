@@ -1,4 +1,6 @@
+package fr.terrainwax.LootCrate;
 import java.nio.file.Path;
+
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 
@@ -12,7 +14,10 @@ import org.spongepowered.api.event.block.InteractBlockEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.text.Text;
+
 import com.google.inject.Inject;
+
+import fr.terrainwax.LootCrate.ConfigManager.DefaultConfigBuilder;
 
 @Plugin(id = "LootCrate", name = "LootCrate Project", version = "1.0")
 public class MainLootCase {
