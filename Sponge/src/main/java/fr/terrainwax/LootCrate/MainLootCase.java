@@ -57,6 +57,9 @@ public class MainLootCase {
     							config.getNode("samples", "sampleNode2")
     									.setComment("This is a sample string node.")
     									.setValue("Hello World!");
+    							config.getNode("samples", "sampleNode3")
+    							.setComment("This is a sample string node.")
+    							.setValue("Hello World!");
     						}
     					});
 
@@ -72,6 +75,9 @@ public class MainLootCase {
     						config.getNode("samples", "sampleNode2")
     								.setComment("This is a sample string node.")
     								.setValue("Hello World!");
+    						config.getNode("samples", "sampleNode3")
+							.setComment("This is a sample string node.")
+							.setValue("Hello World!");
     					});
 
     			// Get the config file!
@@ -107,7 +113,8 @@ public class MainLootCase {
     }
     @Listener
     public void onUse(InteractBlockEvent.Secondary event) {
-    	new eventUse(event);
+    	CommentedConfigurationNode config = configManager.getConfig();
+    	new eventUse(event, config);
     }
     
 }
