@@ -1,6 +1,9 @@
 package fr.terrainwax.LootCrate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
@@ -18,18 +21,24 @@ import org.spongepowered.api.text.format.TextColors;
 
 
 public class LootCommand implements CommandExecutor {
+	public CommentedConfigurationNode config;
+	public LootCommand(CommentedConfigurationNode config) {
+		this.config = config ;
+	}
 
 	public CommandResult execute(CommandSource src, CommandContext args)
 			throws CommandException {
+		
 		Player player = args.<Player>getOne("player").get();
-        ItemType item = ItemTypes.CHEST ;
-        List<Text> textList = new ArrayList<Text>();
-        textList.add(Text.of("LootCrate-PokemonShinyAleatoire"));
-        ItemStack st = (ItemStack) Sponge.getRegistry().createBuilder(ItemStack.Builder.class).itemType(item).build();
-        st.offer(Keys.DISPLAY_NAME, Text.of("LootCrate"));
-        st.offer(Keys.ITEM_LORE, textList);		
+        		
         Object caseid = args.getOne("id").get();
-        if(caseid.equals("1")){
+        if(config.getNode("LootCrate").getChildrenMap().keySet().contains(caseid)){
+        	ItemType item = ItemTypes.CHEST ;
+            List<Text> textList = new ArrayList<Text>();
+            textList.add(Text.of("LootCrate-"+caseid));
+            ItemStack st = (ItemStack) Sponge.getRegistry().createBuilder(ItemStack.Builder.class).itemType(item).build();
+            st.offer(Keys.DISPLAY_NAME, Text.of("LootCrate"));
+            st.offer(Keys.ITEM_LORE, textList);
         	player.getInventory().offer(st);
 			/*int i = (int) Math.floor(Math.random() * 101);
 			if(i < 90){
