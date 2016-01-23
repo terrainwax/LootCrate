@@ -19,7 +19,7 @@ import org.spongepowered.api.text.Text;
 
 import com.google.inject.Inject;
 
-@Plugin(id = "LootCrate", name = "LootCrate Project", version = "1.0")
+@Plugin(id = "LootCrate", name = "LootCrate Project", version = "1.1")
 public class MainLootCrate {
 	
 

@@ -31,13 +31,9 @@ public class LootList implements CommandExecutor {
 		Set<Object> keySet = config.getNode("LootCrate").getChildrenMap().keySet();
 		List<Text> contents = new ArrayList<Text>();
 		for(Object key : keySet){
-			String text ;
-			if(!config.getNode("LootCrate",key,"description").equals(null)){
-				text = config.getNode("LootCrate",key,"description").getString();
-			}else{
-				text = "No description";
-			}
+			String text = config.getNode("LootCrate",key,"description").getString();
 			contents.add(Text.builder(key.toString()).color(TextColors.AQUA)
+					.onClick(TextActions.suggestCommand("/LC give "+src.getName()+" "+key.toString()))
 					.onHover(TextActions.showText(Text.of(text)))
                     .build());
 		}
