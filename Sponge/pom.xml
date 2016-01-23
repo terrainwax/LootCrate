@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>terrainwax</groupId>
   <artifactId>LootCrate</artifactId>
-  <version>1.0-Beta</version>
+  <version>1.1-Beta</version>
   <name>terrainwax plugin</name>
   <description>plugin sponge of terrainwax</description>
   <repositories>
