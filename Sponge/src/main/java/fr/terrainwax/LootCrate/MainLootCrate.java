@@ -20,7 +20,7 @@ import org.spongepowered.api.text.Text;
 import com.google.inject.Inject;
 
 @Plugin(id = "LootCrate", name = "LootCrate Project", version = "1.0")
-public class MainLootCase {
+public class MainLootCrate {
 	
 
 	@Inject
@@ -31,7 +31,7 @@ public class MainLootCase {
 	@DefaultConfig(sharedRoot = true)
 	private ConfigurationLoader<CommentedConfigurationNode> configLoader;
 
-	private ConfigManager configManager;
+	public ConfigManager configManager;
 	@Inject
 	private Logger logger;
 	@Inject
@@ -53,33 +53,41 @@ public class MainLootCase {
     						@Override
     						public void build(CommentedConfigurationNode config) {
     							List<String> itemList = new LinkedList<>();
-    			    			itemList.add("minecraft:diamond,10");
-    			    			itemList.add("minecraft:diamond,10");
-    			    			itemList.add("minecraft:diamond,10");
-    			    			itemList.add("minecraft:diamond,10");
-    			    			itemList.add("minecraft:diamond,10");
-    			    			itemList.add("minecraft:diamond,10");
-    							config.getNode("LootCrate", "Crate-1","system").setComment("You can choose between item or command for the value").setValue("command");
-    							config.getNode("LootCrate", "Crate-1","list").setValue(itemList);
-    							config.getNode("LootCrate", "Crate-2","system").setComment("You can choose between item or command for the value").setValue("item");
+    			    			itemList.add("minecraft:stone 10 5");
+    			    			itemList.add("minecraft:stone 10");
+    			    			List<String> commandlist = new LinkedList<>();
+    			    			commandlist.add("give <player> stone 10 5");
+    			    			commandlist.add("give <player> stone 10");
+    			    			config.getNode("LootCrate", "Crate1","system").setComment("You can choose between item or command for the value").setValue("command");
+        						config.getNode("LootCrate", "Crate1","list").setComment("you can use <player> to replace by the player who use the crate").setValue(commandlist);
+        						config.getNode("LootCrate", "Crate1","random").setValue(true);
+        						config.getNode("LootCrate", "Crate1","description").setValue("its the description of the Crate");
+        						config.getNode("LootCrate", "Crate2","system").setComment("You can choose between item or command for the value").setValue("item");
+        						config.getNode("LootCrate", "Crate2","list").setComment("syntax of for the item is :item quantity data").setValue(itemList);
+        						config.getNode("LootCrate", "Crate2","random").setValue(false);
+        						config.getNode("LootCrate", "Crate2","description").setValue("its the description of the Crate");
     						}
     					});
 
     			List<String> itemList = new LinkedList<>();
-    			itemList.add("minecraft:diamond,10");
-    			itemList.add("minecraft:diamond,10");
-    			itemList.add("minecraft:diamond,10");
-    			itemList.add("minecraft:diamond,10");
-    			itemList.add("minecraft:diamond,10");
-    			itemList.add("minecraft:diamond,10");
+    			itemList.add("minecraft:stone 10 5");
+    			itemList.add("minecraft:stone 10");
+    			List<String> commandlist = new LinkedList<>();
+    			commandlist.add("give <player> stone 10 5");
+    			commandlist.add("give <player> stone 10");
     			configManager.setup(
     					defaultConfig,
     					configLoader,
     					getLogger(),
     					config -> {
-    						config.getNode("LootCrate", "Crate-1","system").setComment("You can choose between item or command for the value").setValue("command");
-    						config.getNode("LootCrate", "Crate-1","list").setValue(itemList);
-    						config.getNode("LootCrate", "Crate-2","system").setComment("You can choose between item or command for the value").setValue("item");
+    						config.getNode("LootCrate", "Crate1","system").setComment("You can choose between item or command for the value").setValue("command");
+    						config.getNode("LootCrate", "Crate1","list").setComment("you can use <player> to replace by the player who use the crate").setValue(commandlist);
+    						config.getNode("LootCrate", "Crate1","random").setValue(true);
+    						config.getNode("LootCrate", "Crate1","description").setValue("its the description of the Crate");
+    						config.getNode("LootCrate", "Crate2","system").setComment("You can choose between item or command for the value").setValue("item");
+    						config.getNode("LootCrate", "Crate2","list").setComment("syntax of for the item is :item quantity data").setValue(itemList);
+    						config.getNode("LootCrate", "Crate2","random").setValue(false);
+    						config.getNode("LootCrate", "Crate2","description").setValue("its the description of the Crate");
     					});
 
     			// Get the config file!
@@ -89,9 +97,7 @@ public class MainLootCase {
     			CommandSpec List = CommandSpec.builder()
             	        .description(Text.of("List all Crate of the plugin"))
             	        .permission("lootcrate.command.list")
-            	        .arguments(
-            	                GenericArguments.remainingJoinedStrings(Text.of("Page")))
-            	        .executor(new LootList())
+            	        .executor(new LootList(config))
             	        .build();
             	CommandSpec Give = CommandSpec.builder()
             	        .description(Text.of("Give a Loot Crate to the player specified"))
@@ -101,11 +107,17 @@ public class MainLootCase {
             	                GenericArguments.remainingJoinedStrings(Text.of("id")))
             	        .executor(new LootCommand(config))
             	        .build();
+            	CommandSpec Reload = CommandSpec.builder()
+            	        .description(Text.of("Reload config of LootCrate"))
+            	        .permission("lootcrate.command.Reload")
+            	        .executor(new ReloadCommand(configManager))
+            	        .build();
                 	CommandSpec lootcommand = CommandSpec.builder()
                 	        .description(Text.of("Parent command of LootCrate plugin"))
                 	        .permission("lootcrate.command")
                 	        .child(Give, "give")
                 	        .child(List, "list")
+                	        .child(Reload, "reload")
                 	        .build();
                 	game.getCommandManager().register(this, lootcommand, "LC");
                 	

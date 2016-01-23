@@ -42,7 +42,7 @@ public class ConfigManager {
     }
 
     private ConfigurationLoader<CommentedConfigurationNode> configLoader;
-    private CommentedConfigurationNode config;
+    public CommentedConfigurationNode config;
     private Logger logger;
 
     public void setup(Path configFile, ConfigurationLoader<CommentedConfigurationNode> configLoader, Logger logger, DefaultConfigBuilder defaultConfigBuilder) {

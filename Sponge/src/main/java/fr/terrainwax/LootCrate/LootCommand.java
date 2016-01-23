@@ -40,6 +40,7 @@ public class LootCommand implements CommandExecutor {
             st.offer(Keys.DISPLAY_NAME, Text.of("LootCrate"));
             st.offer(Keys.ITEM_LORE, textList);
         	player.getInventory().offer(st);
+        	 
 			/*int i = (int) Math.floor(Math.random() * 101);
 			if(i < 90){
 			src.sendMessages(Text.of("test"));
