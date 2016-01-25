@@ -17,6 +17,8 @@ import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.ItemTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.chat.ChatTypes;
+import org.spongepowered.api.text.format.TextColors;
 
 import com.google.common.reflect.TypeToken;
 
@@ -126,8 +128,7 @@ public class eventUse {
         				}
     			}
     			
-    			
-    			firstPlayer.get().getInventory().offer(Sponge.getRegistry().createBuilder(ItemStack.Builder.class).itemType(ItemTypes.COAL_BLOCK).build());
+    			firstPlayer.get().sendMessage(ChatTypes.ACTION_BAR,Text.builder("You opened ").color(TextColors.BLUE).append(Text.builder(key.toString()).color(TextColors.GOLD).build()).build());
     			origStack.setQuantity(firstPlayer.get().getItemInHand().get().getQuantity()-1);
     			firstPlayer.get().setItemInHand(origStack);
     			event.setCancelled(true);
