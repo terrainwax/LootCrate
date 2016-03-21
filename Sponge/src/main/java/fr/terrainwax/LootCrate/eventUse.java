@@ -99,6 +99,7 @@ public class eventUse {
 													"LootCrate","LootCrate", key, "random")
 													.getBoolean() == true) {
 												List<String> commandlist = null;
+												 RandomCollection<String> comandrandom = new RandomCollection<String>();
 												try {
 													commandlist = config
 															.getNode(
@@ -110,11 +111,13 @@ public class eventUse {
 												} catch (ObjectMappingException e) {
 													e.printStackTrace();
 												}
-												int i = (int) Math.floor(Math
-														.random()
-														* commandlist.size());
-												String command = commandlist
-														.get(i);
+												for (String command : commandlist) {
+                                                  Double taille = (double) Integer.parseInt(command.substring(command.indexOf(";")
+                                                         + 1, command.length()));
+                                                  String resultat = command.substring(0, command.indexOf(";"));
+                                                  comandrandom.add(taille, resultat);
+                                                  }
+												String command = comandrandom.next();
 												Sponge.getGame()
 														.getCommandManager()
 														.process(
@@ -167,11 +170,9 @@ public class eventUse {
 											} else if (config.getNode(
 													"LootCrate","LootCrate", key, "random")
 													.getBoolean() == true) {
-											  RandomCollection<String> itemlist = new RandomCollection();
+											  RandomCollection<String> itemlist = new RandomCollection<String>();
 											  List<String> itemlist2 = null ;
-											  int z = 1;
-												try {
-												 
+											  try {
 												  itemlist2 = config
 															.getNode(
 																	"LootCrate","LootCrate",
@@ -179,16 +180,16 @@ public class eventUse {
 															.getList(
 																	TypeToken
 																			.of(String.class));
-												  //while(z != itemlist2.size()){
-												  // String iteme = itemlist2.get(z).substring(itemlist2.indexOf(";")
-	                                                //     + 1, itemlist2.size());
-												   
-												   // z++;
-												  //}
 												} catch (ObjectMappingException e) {
 													e.printStackTrace();
 												}
-												/*Sponge.getGame()
+												for (String item3 : itemlist2) {
+                                                  Double taille = (double) Integer.parseInt(item3.substring(item3.indexOf(";")
+                                                         + 1, item3.length()));
+                                                  String resultat = item3.substring(0, item3.indexOf(";"));
+                                                    itemlist.add(taille, resultat);
+                                                  }
+												Sponge.getGame()
 														.getCommandManager()
 														.process(
 																Sponge.getGame()
@@ -199,8 +200,8 @@ public class eventUse {
 																				.get()
 																				.getName()
 																		+ " "
-																		+ item1);*/
-												 firstPlayer.get().sendMessage(Text.of(itemlist2.get(0).substring(itemlist2.indexOf(";"))));
+																		+ itemlist.next());
+												 
 												
 											}
 										}
@@ -392,6 +393,7 @@ public class eventUse {
 									textList.remove(Text.of("LootCrate-" + key));
 								}
 							}
+							event.setCancelled(true);
 						}
 					}
 				}

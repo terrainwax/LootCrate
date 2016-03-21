@@ -33,7 +33,6 @@ public class LootCommand implements CommandExecutor {
 		Player player = args.<Player> getOne("player").get();
 		Object CrKE = args.getOne("Crate/Key").get();
 		Object caseid = args.getOne("ID").get();
-		player.sendMessage(Text.of(CrKE));
 		if(CrKE.equals("Key")){
 			if (config.getNode("LootCrate","LootKey").getChildrenMap().keySet()
 					.contains(caseid)) {

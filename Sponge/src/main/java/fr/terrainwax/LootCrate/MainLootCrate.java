@@ -83,6 +83,8 @@ public class MainLootCrate {
 								.setValue(false);
 						config.getNode("LootCrate","LootCrate", "Crate2", "description")
 								.setValue("its the description of the Crate");
+						config.getNode("LootCrate","LootKey", "Crate2");
+                        config.getNode("LootCrate","LootKey", "Crate1");
 					}
 				});
 
@@ -123,6 +125,9 @@ public class MainLootCrate {
 							config.getNode("LootCrate","LootCrate", "Crate2", "description")
 									.setValue(
 											"its the description of the Crate");
+							config.getNode("LootCrate","LootKey", "Crate2");
+							config.getNode("LootCrate","LootKey", "Crate1");
+
 						});
 
 		// Get the config file!

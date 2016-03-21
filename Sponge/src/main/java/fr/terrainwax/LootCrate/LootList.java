@@ -30,6 +30,8 @@ public class LootList implements CommandExecutor {
 			throws CommandException {
 		Set<Object> keySet = config.getNode("LootCrate","LootCrate").getChildrenMap()
 				.keySet();
+		Set<Object> keySett = config.getNode("LootCrate","LootKey").getChildrenMap()
+            .keySet();
 		List<Text> contents = new ArrayList<Text>();
 		for (Object key : keySet) {
 			String text = config.getNode("LootCrate","LootCrate", key, "description")
@@ -39,9 +41,22 @@ public class LootList implements CommandExecutor {
 					.color(TextColors.AQUA)
 					.onClick(
 							TextActions.suggestCommand("/LC give "
-									+ src.getName() + " " + key.toString()))
+									+ src.getName() + " "+"Crate " + key.toString()))
 					.onHover(TextActions.showText(Text.of(text))).build());
 		}
+		contents.add(Text.builder("----------------------------------------------------")
+            .build());
+		for (Object key : keySett) {
+          String text = config.getNode("LootCrate","LootKey", key)
+                  .getString();
+          contents.add(Text
+                  .builder("Key of "+key.toString())
+                  .color(TextColors.AQUA)
+                  .onClick(
+                          TextActions.suggestCommand("/LC give "
+                                  + src.getName() + " "+"Key " + key.toString()))
+                  .onHover(TextActions.showText(Text.of(text))).build());
+      }
 		PaginationService paginationService = Sponge.getServiceManager()
 				.provide(PaginationService.class).get();
 
