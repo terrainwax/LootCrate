@@ -63,7 +63,7 @@ public class LootList implements CommandExecutor {
 		paginationService
 				.builder()
 				.title(Text.builder("LootCrate").color(TextColors.YELLOW)
-						.build()).contents(contents).paddingString("-")
+						.build()).contents(contents).padding(Text.of("-"))
 				.sendTo(src);
 
 		return CommandResult.success();

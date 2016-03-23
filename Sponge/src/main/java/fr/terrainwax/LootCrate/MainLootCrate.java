@@ -36,7 +36,7 @@ public class MainLootCrate {
 	private Logger logger;
 	@Inject
 	private Game game;
-
+	
 	public Logger getLogger() {
 		return logger;
 	}
@@ -92,8 +92,8 @@ public class MainLootCrate {
 		itemList.add("minecraft:stone 10 5");
 		itemList.add("minecraft:stone 10");
 		List<String> commandlist = new LinkedList<>();
-		commandlist.add("give <player> stone 10 5");
-		commandlist.add("give <player> stone 10");
+		commandlist.add("give <player> stone 10 5;5");
+		commandlist.add("give <player> stone 10;75");
 		configManager
 				.setup(defaultConfig,
 						configLoader,
