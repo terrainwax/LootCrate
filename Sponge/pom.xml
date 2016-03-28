@@ -2,9 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>terrainwax</groupId>
   <artifactId>LootCrate</artifactId>
-  <version>2.0</version>
-  <name>terrainwax plugin</name>
-  <description>plugin sponge of terrainwax</description>
+  <version>3.0</version>
   <repositories>
     <repository>
         <id>sponge-maven-repo</id>
@@ -19,6 +17,7 @@
     </repository>
 </repositories>
 <build>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -32,13 +31,19 @@
         </plugins>
     </build>
 
+
 <dependencies>
     <dependency>
         <groupId>org.spongepowered</groupId>
         <artifactId>spongeapi</artifactId>
-        <version>3.0.0</version>
+        <version>4.0.1</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
 
+	<name>LootCrate</name>
+	<description>LootCrate is a plugin of random crate who you can configure all you want </description>
+	<organization>
+		<name>Pokepixel</name>
+	</organization>
 </project>

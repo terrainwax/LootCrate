@@ -23,7 +23,7 @@ public class LootList implements CommandExecutor {
 	private CommentedConfigurationNode config;
 
 	public LootList(CommentedConfigurationNode config) {
-		this.config = config;
+		this.config = ConfigManager.getInstance().getConfig();
 	}
 
 	public CommandResult execute(CommandSource src, CommandContext args)
