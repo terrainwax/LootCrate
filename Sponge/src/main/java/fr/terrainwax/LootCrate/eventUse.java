@@ -98,11 +98,12 @@ public class eventUse {
 																		.color(TextColors.GOLD)
 																		.build())
 																.build());
-										origStack.setQuantity(firstPlayer.get()
+										firstPlayer.get().getInventory().query(origStack).poll(1);
+										/*origStack.setQuantity(firstPlayer.get()
 												.getItemInHand().get()
 												.getQuantity() - 1);
 										firstPlayer.get().setItemInHand(
-												origStack);
+												origStack);*/
 										event.setCancelled(true);
 										}else {
 											firstPlayer.get().sendMessage(Text.builder("You don't have the key").color(TextColors.RED).build());
@@ -151,11 +152,12 @@ public class eventUse {
 																		.color(TextColors.GOLD)
 																		.build())
 																.build());
-										origStack.setQuantity(firstPlayer.get()
+										firstPlayer.get().getInventory().query(origStack).poll(1);
+										/*origStack.setQuantity(firstPlayer.get()
 												.getItemInHand().get()
 												.getQuantity() - 1);
 										firstPlayer.get().setItemInHand(
-												origStack);
+												origStack);*/
 										event.setCancelled(true);
 									}
 								} else {
