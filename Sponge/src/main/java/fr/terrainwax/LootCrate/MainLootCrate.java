@@ -153,10 +153,11 @@ public class MainLootCrate {
 						Text.of("Give a Loot Crate to the player specified"))
 				.permission("lootcrate.command.give")
 				.arguments(
-						GenericArguments.onlyOne(GenericArguments.player(Text
-								.of("player"))),
+						GenericArguments.onlyOne(GenericArguments.player(Text.of("player"))),
 						GenericArguments.string(Text.of("Crate/Key")),
-						GenericArguments.string(Text.of("ID")))
+						GenericArguments.string(Text.of("ID")),
+						GenericArguments.string(Text.of("Number"))
+						)
 				.executor(new LootCommand(config)).build();
 		CommandSpec Reload = CommandSpec.builder()
 				.description(Text.of("Reload config of LootCrate"))

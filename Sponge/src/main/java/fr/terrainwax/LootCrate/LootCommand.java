@@ -33,6 +33,7 @@ public class LootCommand implements CommandExecutor {
 		Player player = args.<Player> getOne("player").get();
 		Object CrKE = args.getOne("Crate/Key").get();
 		Object caseid = args.getOne("ID").get();
+		Object number = args.getOne("Number").get();
 		if(CrKE.equals("Key")){
 			if (config.getNode("LootCrate","LootKey").getChildrenMap().keySet()
 					.contains(caseid)) {
@@ -44,6 +45,7 @@ public class LootCommand implements CommandExecutor {
 						.build();
 				st.offer(Keys.DISPLAY_NAME, Text.of("LootKey"));
 				st.offer(Keys.ITEM_LORE, textList);
+				st.setQuantity((int)number);
 				player.getInventory().offer(st);
 				/*
 				 * int i = (int) Math.floor(Math.random() * 101); if(i < 90){
@@ -69,6 +71,7 @@ public class LootCommand implements CommandExecutor {
 					.build();
 			st.offer(Keys.DISPLAY_NAME, Text.of("LootCrate"));
 			st.offer(Keys.ITEM_LORE, textList);
+			st.setQuantity((int)number);
 			player.getInventory().offer(st);
 
 			/*
